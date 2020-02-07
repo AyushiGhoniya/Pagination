@@ -1,0 +1,21 @@
+<div class="container" style="margin: 20px;">
+    <h1 style="text-align: center;">Employee Details</h1>
+    <table class="table" style="width: 100%; margin-top: 1em;text-align: center;">
+        <tr>
+            <th class="pointer" (click)="sort('id')">Id</th>
+            <th class="pointer" (click)="sort('employee_name')">Name</th>
+            <th class="pointer" (click)="sort('employee_age')">Age</th>
+            <th class="pointer" (click)="sort('employee_salary')">Salary</th>
+        </tr>
+
+        <tr *ngFor="let employee of employees">
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.employee_name }}</td>
+            <td>{{ employee.employee_age }}</td>
+            <td>{{ employee.employee_salary | currency : 'INR' }}</td>
+        </tr>
+    </table>
+    
+    <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [(page)]="page" (pageChange)="pageChange(page)"></ngb-pagination>
+     
+</div>
