@@ -17,19 +17,25 @@ export class EmployeeDetailsComponent implements OnInit {
 
   sortClass = 'up'
   orderBy = 'asc'
-  sortBy = 'id';
+  sortBy: string = 'id';
 
-  constructor(private employeeService: EmployeeService ,private activatedRoute: ActivatedRoute ,private router: Router ,private http: HttpClient) { }
+  constructor(
+    private employeeService: EmployeeService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+    ) { }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       this.collectionSize = 24;
       this.page = parseInt(params['page']);
       this.pageSize = parseInt(params['limit']);
+      this.sortBy = params['sort'];
       if(isNaN(this.page) || isNaN(this.pageSize)) {
         this.page = 1;
         this.pageSize = 5;
-        this.router.navigate(['/employee'], { queryParams: { page: this.page, limit: this.pageSize }})
+        this.router.navigate(['/employee'], { queryParams: { page: this.page, limit: this.pageSize, sort: this.sortBy }})
       }
       this.employeeService.getEmployees(this.page ,this.sortBy ,this.pageSize)
         .subscribe(data => this.employees = data);
@@ -37,6 +43,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   sort(property) {
+    this.sortBy = property
     this.employeeService.getEmployees(this.page ,this.sortBy ,this.pageSize).subscribe(data => {
       this.employees = data
     });
@@ -44,7 +51,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   pageChange() {
-      this.router.navigate(['/employee'], { queryParams: { page: this.page, limit: this.pageSize }})
+      this.router.navigate(['/employee'], { queryParams: { page: this.page, limit: this.pageSize, sort: this.sortBy }})
   }
 
   // sort(property) {
